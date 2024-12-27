@@ -1,0 +1,22 @@
+<!-- templates/email/report-ready.hbs -->
+<html>
+<body>
+    <h2>Your {{reportType}} Report is Ready</h2>
+    <p>Hello,</p>
+    <p>Your {{reportType}} report for {{businessName}} is now ready.</p>
+    
+    <p><strong>Report Details:</strong></p>
+    <ul>
+        <li>Type: {{reportType}}</li>
+        <li>Period: {{startDate}} to {{endDate}}</li>
+        <li>Format: {{format}}</li>
+    </ul>
+
+    <p>You can download your report using the link below:</p>
+    <p><a href="{{reportUrl}}">Download Report</a></p>
+    
+    <p><small>This link will expire in {{expiryHours}} hours.</small></p>
+
+    <p>Best regards,<br>Your Business Team</p>
+</body>
+</html>

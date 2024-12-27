@@ -1,0 +1,18 @@
+<!-- templates/email/scheduled-report.hbs -->
+<html>
+<body>
+    <h2>Report Schedule Confirmation</h2>
+    <p>Hello,</p>
+    <p>Your {{reportType}} report for {{businessName}} has been scheduled successfully.</p>
+    
+    <p><strong>Schedule Details:</strong></p>
+    <ul>
+        <li>Frequency: {{frequency}}</li>
+        <li>Next Report: {{nextRunDate}}</li>
+    </ul>
+
+    <p>You will receive an email with the report link when it's generated.</p>
+
+    <p>Best regards,<br>Your Business Team</p>
+</body>
+</html>

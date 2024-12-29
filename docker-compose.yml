@@ -1,4 +1,4 @@
-version: '3.8'
+# docker-compose.yml
 services:
   app:
     build: .
@@ -38,7 +38,8 @@ services:
     environment:
       - VAULT_ADDR=http://0.0.0.0:8200
       - VAULT_API_ADDR=http://0.0.0.0:8200
-      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_TOKEN}
+      - VAULT_TOKEN=hvs.3dy45xFsQj4oPuRtwjGOpsS5
+      - VAULT_DEV_ROOT_TOKEN_ID=hvs.3dy45xFsQj4oPuRtwjGOpsS5
     volumes:
       - ./vault/config:/vault/config
       - ./vault/file:/vault/file

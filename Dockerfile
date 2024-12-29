@@ -5,17 +5,22 @@ FROM node:18-alpine
 WORKDIR /usr/src/app
 
 # Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production
 
-# Bundle app source
+# Copy src directory first
+COPY src/ ./src/
+
+# Copy remaining files
 COPY . .
 
-# Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
+# Debug: List contents to verify files
+RUN ls -la
+RUN ls -la src/
+
 EXPOSE 8000
 
-CMD [ "node", "server.js" ]
-
+# Update the path to point to src/server.js
+CMD [ "node", "./src/server.js" ]

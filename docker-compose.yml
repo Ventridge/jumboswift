@@ -8,7 +8,9 @@ services:
       - MONGODB_URI=${MONGODB_URI}
       - NODE_ENV=production
     volumes:
-      - .:/usr/src/app
+      - ./src:/usr/src/app/src
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
       - /usr/src/app/node_modules
     networks:
       - app-network

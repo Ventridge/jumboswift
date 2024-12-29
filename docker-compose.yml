@@ -7,14 +7,30 @@ services:
     environment:
       - MONGODB_URI=${MONGODB_URI}
       - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     volumes:
       - ./src:/usr/src/app/src
       - ./package.json:/usr/src/app/package.json
       - ./package-lock.json:/usr/src/app/package-lock.json
       - /usr/src/app/node_modules
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  redis_data:

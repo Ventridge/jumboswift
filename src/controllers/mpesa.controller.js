@@ -96,8 +96,8 @@ class MpesaController {
         consumerSecret,
         passkey,
         environment,
-        callbackUrl,
-        timeoutUrl,
+        callbackUrl='https://4074-41-90-172-13.ngrok-free.app/api/mpesa/callback',
+        timeoutUrl='https://4074-41-90-172-13.ngrok-free.app/api/mpesa/timeout',
       } = req.body;
 
       const credentials = await MpesaCredential.findOne({

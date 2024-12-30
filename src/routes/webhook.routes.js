@@ -1,18 +1,19 @@
 // services/webhook-service/src/routes/webhook.routes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const WebhookController = require('../controllers/webhook.controller');
-const auth = require('../middleware/auth');
+const WebhookController = require("../controllers/webhook.controller");
+const auth = require("../middleware/auth");
 
 // Register Webhook URL
 router.post(
-  '/register',
+  "/register",
   auth,
   [
-    body('webhookUrl').isURL().withMessage('Valid webhook URL required'),
-    body('events').isArray().withMessage('Events must be an array'),
-    body('events.*').isIn(['payment.success', 'payment.failed', 'payment.pending'])
-      .withMessage('Invalid event type')
+    body("webhookUrl").isURL().withMessage("Valid webhook URL required"),
+    body("events").isArray().withMessage("Events must be an array"),
+    body("events.*")
+      .isIn(["payment.success", "payment.failed", "payment.pending"])
+      .withMessage("Invalid event type"),
   ],
   async (req, res) => {
     try {
@@ -23,10 +24,10 @@ router.post(
 
       const webhookController = new WebhookController();
       const result = await webhookController.registerWebhook(
-        req.business.id,
+        req.business._id,
         req.body
       );
-      
+
       res.status(201).json(result);
     } catch (error) {
       res.status(500).json({ error: error.message });

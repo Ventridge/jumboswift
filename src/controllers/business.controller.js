@@ -95,7 +95,7 @@ class BusinessController {
    */
   static async getProfile(req, res) {
     try {
-      const business = await Business.findById(req.business.id).select(
+      const business = await Business.findById(req.business._id).select(
         "-password -__v"
       );
 
@@ -144,7 +144,7 @@ class BusinessController {
       };
 
       const business = await Business.findByIdAndUpdate(
-        req.business.id,
+        req.business._id,
         { $set: updates },
         { new: true, runValidators: true }
       ).select("-password -__v");
@@ -188,7 +188,7 @@ class BusinessController {
 
       // Check if credentials already exist
       const existingCredentials = await MpesaCredential.findOne({
-        businessId: req.business.id,
+        businessId: req.business._id,
       });
 
       if (existingCredentials) {
@@ -200,7 +200,7 @@ class BusinessController {
 
       // Store credentials in vault
       const vault = new VaultService();
-      await vault.storeMpesaCredentials(req.business.id, {
+      await vault.storeMpesaCredentials(req.business._id, {
         consumerKey,
         consumerSecret,
         passkey,
@@ -208,7 +208,7 @@ class BusinessController {
 
       // Store reference in database
       const mpesaCredential = new MpesaCredential({
-        businessId: req.business.id,
+        businessId: req.business._id,
         paybillNumber,
         status: "active",
       });
@@ -241,7 +241,7 @@ class BusinessController {
       const endDate = req.query.endDate;
       const status = req.query.status;
 
-      const query = { businessId: req.business.id };
+      const query = { businessId: req.business._id };
 
       if (startDate && endDate) {
         query.createdAt = {

@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
     businessId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Business',
+        type: String,
         required: [true, 'Business ID is required']
     },
     amount: {

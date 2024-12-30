@@ -1,22 +1,24 @@
 // services/payment-service/src/routes/payment.routes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const PaymentController = require('../controllers/payment.controller');
-const {auth} = require('../middleware/auth');
-
+const { body, validationResult } = require("express-validator");
+const PaymentController = require("../controllers/payment.controller");
+const { auth } = require("../middleware/auth");
 
 // Initiate M-Pesa Payment
 router.post(
-  '/mpesa/initiate',
+  "/mpesa/initiate",
   auth,
   [
-    body('amount').isFloat({ min: 1 }).withMessage('Valid amount required'),
-    body('phoneNumber').matches(/^254\d{9}$/).withMessage('Valid Kenyan phone number required'),
-    body('accountReference').notEmpty().withMessage('Account reference required')
+    body("amount").isFloat({ min: 1 }).withMessage("Valid amount required"),
+    body("phoneNumber")
+      .matches(/^254\d{9}$/)
+      .withMessage("Valid Kenyan phone number required"),
+    body("accountReference")
+      .notEmpty()
+      .withMessage("Account reference required"),
   ],
   async (req, res) => {
-
     // example request body
     // {
     //   "amount": 100,
@@ -32,9 +34,9 @@ router.post(
       const paymentController = new PaymentController();
       const result = await paymentController.initiateMpesaPayment({
         ...req.body,
-        businessId: req.business.id
+        businessId: req.business._id,
       });
-      
+
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -43,18 +45,14 @@ router.post(
 );
 
 // M-Pesa Callback
-router.post(
-  '/mpesa/callback',
-  async (req, res) => {
-    try {
-      const paymentController = new PaymentController();
-      await paymentController.handleMpesaCallback(req.body);
-      res.status(200).json({ success: true });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+router.post("/mpesa/callback", async (req, res) => {
+  try {
+    const paymentController = new PaymentController();
+    await paymentController.handleMpesaCallback(req.body);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-);
-
+});
 
 module.exports = router;

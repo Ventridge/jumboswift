@@ -1,3 +1,4 @@
+const Transaction = require("../models/Transaction");
 class TransactionController {
     async getTransactionStats(businessId, query) {
       const { startDate, endDate, groupBy = 'day' } = query;

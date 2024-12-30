@@ -101,7 +101,7 @@ class MpesaController {
       } = req.body;
 
       const credentials = await MpesaCredential.findOne({
-        businessId: req.business.id,
+        businessId: req.business._id,
       });
 
       if (!credentials) {
@@ -113,7 +113,7 @@ class MpesaController {
 
       // Update vault data
       const vaultService = new VaultService();
-      await vaultService.updateMpesaCredentials(req.business.id, {
+      await vaultService.updateMpesaCredentials(req.business._id, {
         consumerKey,
         consumerSecret,
         passkey,
@@ -156,7 +156,7 @@ class MpesaController {
   static async getCredentials(req, res) {
     try {
       const credentials = await MpesaCredential.findOne({
-        businessId: req.business.id,
+        businessId: req.business._id,
       }).select("-vaultSecretPath");
 
       if (!credentials) {
@@ -187,7 +187,7 @@ class MpesaController {
   static async deleteCredentials(req, res) {
     try {
       const credentials = await MpesaCredential.findOne({
-        businessId: req.business.id,
+        businessId: req.business._id,
       });
 
       if (!credentials) {
@@ -199,7 +199,7 @@ class MpesaController {
 
       // Delete from vault
       const vaultService = new VaultService();
-      await vaultService.deleteMpesaCredentials(req.business.id);
+      await vaultService.deleteMpesaCredentials(req.business._id);
 
       // Delete from database
       await credentials.remove();
@@ -297,7 +297,7 @@ class MpesaController {
         matchExact = true, // Whether to match amount exactly
       } = req.query;
 
-      const query = { businessId: req.business.id };
+      const query = { businessId: req.business._id };
 
       // Date range filter
       if (startDate && endDate) {
@@ -349,7 +349,7 @@ class MpesaController {
         if (isNaN(numericAmount)) return null;
 
         const matchQuery = {
-          businessId: req.business.id,
+          businessId: req.business._id,
           status: "completed",
           amount: matchExact
             ? numericAmount
@@ -419,7 +419,7 @@ class MpesaController {
       }
 
       const query = {
-        businessId: req.business.id,
+        businessId: req.business._id,
         status: "completed",
         createdAt: {
           $gte: new Date(Date.now() - timeWindow * 60 * 1000),
@@ -481,7 +481,7 @@ class MpesaController {
   static async registerUrls(req, res) {
     try {
       const credentials = await MpesaCredential.findOne({
-        businessId: req.business.id,
+        businessId: req.business._id,
       });
 
       if (!credentials) {
@@ -494,7 +494,7 @@ class MpesaController {
       // Get access token
       const vaultService = new VaultService();
       const mpesaCredentials = await vaultService.getMpesaCredentials(
-        req.business.id
+        req.business._id
       );
 
       const tokenUrl =

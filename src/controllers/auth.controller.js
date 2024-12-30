@@ -166,6 +166,9 @@ class AuthController {
       });
     }
   }
+
+  // VERIFY TOKEN
+  
 }
 
 module.exports = AuthController;

@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
-const {auth }= require("../middleware/auth.js");
+const { auth } = require("../middleware/auth.js");
 const SettingsController = require("../controllers/settings.controller.js");
 
 // Update Business Profile
@@ -21,7 +21,7 @@ router.put(
     try {
       const settingsController = new SettingsController();
       const profile = await settingsController.updateProfile(
-        req.business.id,
+        req.business._id,
         req.body
       );
       res.json(profile);
@@ -46,7 +46,7 @@ router.put(
     try {
       const settingsController = new SettingsController();
       const settings = await settingsController.updateNotificationSettings(
-        req.business.id,
+        req.business._id,
         req.body
       );
       res.json(settings);

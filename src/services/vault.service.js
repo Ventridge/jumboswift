@@ -48,17 +48,21 @@ class VaultService {
      */
     async storeMpesaCredentials(businessId, credentials) {
         try {
+            // KV-v2 path structure should be: /v1/secret/data/path
             const path = `secret/data/mpesa/${businessId}`;
             await this.client.post(`/v1/${path}`, {
                 data: {
-                    consumerKey: credentials.consumerKey,
-                    consumerSecret: credentials.consumerSecret,
-                    passkey: credentials.passkey,
-                    environment: credentials.environment || 'sandbox'
+                    data: {  // Note: KV-v2 requires nested data object
+                        consumerKey: credentials.consumerKey,
+                        consumerSecret: credentials.consumerSecret,
+                        passkey: credentials.passkey,
+                        environment: credentials.environment || 'sandbox'
+                    }
                 }
             });
         } catch (error) {
             console.error('Error storing M-Pesa credentials in Vault:', error.message);
+            console.error('Error details:', error.response?.data || error);  // Add more error details
             throw new Error('Failed to store credentials securely');
         }
     }

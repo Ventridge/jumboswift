@@ -39,7 +39,7 @@ class MpesaController {
 
       // Store sensitive data in vault
       const vaultService = new VaultService();
-      await vaultService.storeMpesaCredentials(req.business.id, {
+      await vaultService.storeMpesaCredentials(req.business._id, {
         consumerKey,
         consumerSecret,
         passkey,
@@ -52,7 +52,7 @@ class MpesaController {
         paybillNumber,
         environment,
         status: "active",
-        vaultSecretPath: `secret/mpesa/${req.business.id}`,
+        vaultSecretPath: `secret/mpesa/${req.business._id}`,
         shortcode: shortcode || paybillNumber, // Often shortcode is same as paybill
         callbackUrl:
           callbackUrl || `${process.env.API_BASE_URL}/mpesa/callback`,

@@ -60,10 +60,10 @@ class PaymentController {
               paybillNumber: mpesaCredentials.paybillNumber,
               callbackUrl: mpesaCredentials.callbackUrl,
               timeoutUrl: mpesaCredentials.timeoutUrl,
-              environment: mpesaCredentials.environment,
-              consumerKey: vaultCredentials.consumerKey,
-              consumerSecret: vaultCredentials.consumerSecret,
-              passkey: vaultCredentials.passkey
+              environment: vaultCredentials.data.environment,
+              consumerKey: vaultCredentials.data.consumerKey,
+              consumerSecret: vaultCredentials.data.consumerSecret,
+              passkey: vaultCredentials.data.passkey
           };
 
           // 4. Initialize MPesa client with complete credentials

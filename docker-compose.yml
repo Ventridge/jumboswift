@@ -7,7 +7,6 @@ services:
     environment:
       - MONGODB_URI=${MONGODB_URI}
       - NODE_ENV=production
-      - REDIS_HOST=redis
       - REDIS_PORT=6379
       - VAULT_ADDR=http://vault:8200
       - VAULT_TOKEN=${VAULT_TOKEN}
@@ -17,17 +16,7 @@ services:
       - ./package-lock.json:/usr/src/app/package-lock.json
       - /usr/src/app/node_modules
     depends_on:
-      - redis
       - vault
-    networks:
-      - app-network
-
-  redis:
-    image: redis:latest
-    ports:
-      - "6380:6379"
-    volumes:
-      - redis_data:/data
     networks:
       - app-network
 

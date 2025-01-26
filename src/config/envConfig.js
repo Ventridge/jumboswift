@@ -1,17 +1,15 @@
-import chalk from "chalk";
-
 const requiredEnvVars = ["NODE_ENV", "PORT", "MONGODB_URI", "JWT_SECRET", "ENCRYPTION_KEY", "ADMIN_USERNAME", "ADMIN_PASSWORD"];
 
 // Validate required environment variables
 const missingVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
 if (missingVars.length > 0) {
-  console.error(chalk.red(`Missing required environment variables: ${missingVars.join(", ")}`));
+  console.error("\x1b[31m%s\x1b[0m", `Missing required environment variables: ${missingVars.join(", ")}`);
   process.exit(1);
 }
 
 const config = {
   env: process.env.NODE_ENV || "development",
-  port: parseInt(process.env.PORT || "3000", 10),
+  port: parseInt(process.env.PORT || "8000", 10),
   mongoUri: process.env.MONGODB_URI,
   jwtSecret: process.env.JWT_SECRET,
 

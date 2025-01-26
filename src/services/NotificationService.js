@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
-import config from '../config/envConfig.js';
+import nodemailer from "nodemailer";
+import config from "../config/envConfig.js";
 
 class NotificationService {
   constructor() {
@@ -19,7 +19,7 @@ class NotificationService {
     const emailData = {
       to: customer.email,
       subject: `Payment Confirmation - ${business.name}`,
-      template: 'payment-confirmation',
+      template: "payment-confirmation",
       context: {
         businessName: business.name,
         amount: payment.amount,
@@ -36,17 +36,19 @@ class NotificationService {
     const emailData = {
       to: invoice.customer.email,
       subject: `Invoice ${invoice.invoiceNumber} from ${invoice.business.name}`,
-      template: 'invoice',
+      template: "invoice",
       context: {
         businessName: invoice.business.name,
         invoiceNumber: invoice.invoiceNumber,
         amount: invoice.total,
         dueDate: invoice.dueDate,
       },
-      attachments: [{
-        filename: `Invoice-${invoice.invoiceNumber}.pdf`,
-        content: pdf,
-      }],
+      attachments: [
+        {
+          filename: `Invoice-${invoice.invoiceNumber}.pdf`,
+          content: pdf,
+        },
+      ],
     };
 
     await this.sendEmail(emailData);
@@ -55,8 +57,8 @@ class NotificationService {
   async sendRefundNotification(refund, payment, customer) {
     const emailData = {
       to: customer.email,
-      subject: 'Refund Processed',
-      template: 'refund-notification',
+      subject: "Refund Processed",
+      template: "refund-notification",
       context: {
         amount: refund.amount,
         currency: payment.currency,
@@ -83,8 +85,8 @@ class NotificationService {
         attachments,
       });
     } catch (error) {
-      console.error('Failed to send email:', error);
-      throw new Error('Failed to send email notification');
+      console.error("Failed to send email:", error);
+      throw new Error("Failed to send email notification");
     }
   }
 

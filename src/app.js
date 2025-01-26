@@ -1,15 +1,14 @@
-// src/app
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import compression from "compression";
 import mongoSanitize from "express-mongo-sanitize";
 import morgan from "morgan";
-import routes from "./routes/index";
-import { errorHandler } from "./middlewares/errorHandler";
-import database from "./config/database";
-import config from "./config/envConfig";
-import setupSwagger from "./middlewares/swagger";
+import routes from "./routes/index.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import database from "./config/database.js";
+import config from "./config/envConfig.js";
+import setupSwagger from "./middlewares/swagger.js";
 
 class App {
   constructor() {
@@ -21,41 +20,31 @@ class App {
   }
 
   setupMiddleware() {
-    // Security middleware
     this.app.use(helmet());
     this.app.use(cors());
     this.app.use(mongoSanitize());
-
-    // Body parsing
-    this.app.use(
-      express.json({
-        verify: (req, res, buf) => {
-          if (req.originalUrl.includes("/webhook")) {
-            req.rawBody = buf.toString();
-          }
-        },
-      })
-    );
+    this.app.use(express.json({
+      verify: (req, res, buf) => {
+        if (req.originalUrl.includes("/webhook")) {
+          req.rawBody = buf.toString();
+        }
+      },
+    }));
     this.app.use(express.urlencoded({ extended: true }));
-
-    // Compression
     this.app.use(compression());
-
-    // Logging
+    
     if (config.env !== "test") {
       this.app.use(morgan("dev"));
     }
   }
 
   setupSwagger() {
-    // Only enable Swagger in development and staging environments
     if (config.env !== "production") {
       setupSwagger(this.app);
     }
   }
 
   setupRoutes() {
-    // Health check
     this.app.get("/health", (req, res) => {
       res.status(200).json({
         status: "success",
@@ -63,10 +52,8 @@ class App {
       });
     });
 
-    // API routes
     this.app.use("/api/v1", routes);
 
-    // 404 handler
     this.app.use((req, res) => {
       res.status(404).json({
         status: "error",
@@ -81,16 +68,15 @@ class App {
 
   async start() {
     try {
-      // Connect to database
       await database.connect();
-
-      // Start server
+      console.log("\x1b[36m%s\x1b[0m", "[App] Database connection established");
+      
       const port = config.port;
       this.app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
+        console.log("\x1b[32m%s\x1b[0m", `[App] Server running on port ${port}`);
       });
     } catch (error) {
-      console.error("Failed to start server:", error);
+      console.error("\x1b[31m%s\x1b[0m", "[App] Failed to start server:", error);
       process.exit(1);
     }
   }

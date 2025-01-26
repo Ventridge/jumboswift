@@ -1,8 +1,6 @@
 **/node_modules
-.env
 **/dist
 **/build
-**/.env
 .DS_Store
 **/.DS_Store
 mongo_keyfile
